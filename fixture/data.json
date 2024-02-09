@@ -1,0 +1,104 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "name": "фрукт",
+      "description": ""
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "овощ",
+      "description": ""
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+      "name": "ягода",
+      "description": ""
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "name": "яблоко",
+      "description": "красное",
+      "preview": "",
+      "category": 1,
+      "price": 123,
+      "created_at": null,
+      "updated_at": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "груша",
+      "description": "зелёная",
+      "preview": "",
+      "category": 1,
+      "price": 125,
+      "created_at": null,
+      "updated_at": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "name": "картофель",
+      "description": "мытый",
+      "preview": "",
+      "category": 2,
+      "price": 119,
+      "created_at": null,
+      "updated_at": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+      "name": "морковь",
+      "description": "хрустящая",
+      "preview": "",
+      "category": 2,
+      "price": 100,
+      "created_at": null,
+      "updated_at": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 5,
+    "fields": {
+      "name": "клубника",
+      "description": "спелая",
+      "preview": "",
+      "category": 3,
+      "price": 200,
+      "created_at": null,
+      "updated_at": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 6,
+    "fields": {
+      "name": "черешня",
+      "description": "огромная",
+      "preview": "",
+      "category": 3,
+      "price": 300,
+      "created_at": null,
+      "updated_at": null
+    }
+  }
+]
