@@ -22,11 +22,10 @@ class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название')
     description = models.TextField(verbose_name='Описание', **NULLABLE)
     preview = models.ImageField(upload_to='preview/', **NULLABLE, verbose_name='Фото')
-    # category = models.CharField(max_length=100, verbose_name='Категория')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
     price = models.IntegerField(verbose_name='Цена за штуку')
-    created_at = models.DateField(**NULLABLE, verbose_name='Дата создания')
-    updated_at = models.DateField(**NULLABLE, verbose_name='Дата последнего изменения')
+    created_at = models.DateField(auto_now=True, verbose_name='Дата создания')
+    updated_at = models.DateField(auto_now_add=True, verbose_name='Дата последнего изменения')
     # manufactured_at = models.DateField(**NULLABLE, verbose_name='Дата производства')
 
     def __str__(self):
