@@ -29,7 +29,7 @@
     "fields": {
       "name": "яблоко",
       "description": "красное",
-      "preview": "",
+      "preview": "apple.jpg",
       "category": 1,
       "price": 123,
       "created_at": null,
@@ -42,7 +42,7 @@
     "fields": {
       "name": "груша",
       "description": "зелёная",
-      "preview": "",
+      "preview": "pear.jpg",
       "category": 1,
       "price": 125,
       "created_at": null,
@@ -55,7 +55,7 @@
     "fields": {
       "name": "картофель",
       "description": "мытый",
-      "preview": "",
+      "preview": "potato.jpg",
       "category": 2,
       "price": 119,
       "created_at": null,
@@ -68,7 +68,7 @@
     "fields": {
       "name": "морковь",
       "description": "хрустящая",
-      "preview": "",
+      "preview": "carrot.jpg",
       "category": 2,
       "price": 100,
       "created_at": null,
@@ -81,7 +81,7 @@
     "fields": {
       "name": "клубника",
       "description": "спелая",
-      "preview": "",
+      "preview": "straw.jpg",
       "category": 3,
       "price": 200,
       "created_at": null,
@@ -94,7 +94,7 @@
     "fields": {
       "name": "черешня",
       "description": "огромная",
-      "preview": "",
+      "preview": "cherry.jpg",
       "category": 3,
       "price": 300,
       "created_at": null,
