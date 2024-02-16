@@ -14,7 +14,7 @@
                         {{object.description| title}}
                     </p>
                     <h2 class="card-title pricing-card-title">{{object.price}} руб.</h2>
-                    <button type="button" class="btn btn-success">Купить</button>
+                    <a type="button" class="btn btn-success" href="{% url 'catalog:product' object.pk %}" >Купить</a>
                 </div>
             </div>
         </div>

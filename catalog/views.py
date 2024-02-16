@@ -1,13 +1,14 @@
 from django.shortcuts import render
 
-from catalog.models import Product
+from catalog.models import Product, Category
 
 
 # Create your views here.
 
 def home(request):
     context = {
-        'title': 'Домашняя'
+        'title': 'Домашняя',
+        'cat_list': Category.objects.all()
     }
     return render(request, 'main/home.html', context)
 
@@ -18,24 +19,36 @@ def contact(request):
         message = request.POST.get('message')
         print(f'{email} - {message}')
     context = {
-        'title': 'Контакты'
+        'title': 'Контакты',
+        'cat_list': Category.objects.all()
     }
     return render(request, 'main/contact.html', context)
 
 
 def catalog(request):
-    product_list = Product.objects.all()
     context = {
-        'object_list': product_list,
+        'object_list': Product.objects.all(),
+        'cat_list': Category.objects.all(),
         'title': 'Каталог'
     }
     return render(request, 'main/catalog.html', context)
 
 
-def product(request):
-    product_list = Product.objects.all()
+def cat_prod(request, pk):
+    cat = Category.objects.get(pk=pk)
     context = {
-        'object_list': product_list,
-        'title': 'Продукт'
+        'object_list': Product.objects.filter(category=pk),
+        'cat_list': Category.objects.all(),
+        'title': f'{cat.name}'
+    }
+    return render(request, 'main/catalog.html', context)
+
+
+def product(request, pk):
+    prod = Product.objects.get(pk=pk)
+    context = {
+        'object_list': Product.objects.filter(pk=pk),
+        'cat_list': Category.objects.all(),
+        'title': f'{prod.name}'
     }
     return render(request, 'main/product.html', context)

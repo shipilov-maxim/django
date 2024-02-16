@@ -2,11 +2,14 @@
 {% block content %}
 {% load tags %}
 <div class="card mt-5">
+    {% for object in object_list %}
     <div class="card-body">
-        <h5 class="card-title"></h5>
-        <p class="card-text">Это более широкая карточка с вспомогательным текстом ниже в качестве естественного перехода
-            к дополнительному контенту. Этот контент немного длиннее.</p>
-        <p class="card-text"><small class="text-muted">Последнее обновление 3 мин. назад</small></p>
+        <h5 class="card-title">{{ object.name| title}}</h5>
+        <img src="{{ object.preview| my_media}}" class="card-img-top">
+        <p class="card-text">{{object.description| title}}</p>
+        <p class="card-text"><small class="text-muted">{{object.updated_up}}</small></p>
+        <a type="button" class="btn btn-success text-center" href="#" >В корзину</a>
     </div>
+    {% endfor %}
 </div>
 {% endblock %}
