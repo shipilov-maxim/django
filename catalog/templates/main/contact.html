@@ -1,21 +1,32 @@
 {% extends 'main/base.html' %}
 {% block content %}
-<div class="row text-center">
-    <h1>Контакты</h1>
-</div>
+{% load tags %}
 <div class="row">
-    <div class="col-4"></div>
-    <div class="col-4">
+    <div class="col-6">
         <div class="card">
-            <img src="https://sun9-64.userapi.com/impf/c627816/v627816833/34833/yiQyBDKuRnA.jpg?size=640x852&quality=96&sign=9752be6cb3b99c02e96fcab37c599dce&type=album"
-                 class="card-img-top" alt="...">
-
+            <img src="{{ 'contact.jpg'|my_media  }}"
+                 class="card-img-top">
             <div class="card-body">
                 <h5 class="card-title">Шипилов Максим</h5>
-                <p class="card-text">г. Самара, тел. 8(960)830-74-51</p>
-                <a href="#" class="btn btn-primary">Написать</a>
+                <p class="card-text">г. Самара, тел. 8 (960) 830-74-51</p>
             </div>
         </div>
+    </div>
+
+    <div class="col-6">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="Email" class="form-label">Адрес электронной почты</label>
+                <input name="email" type="email" class="form-control" id="Email" aria-describedby="emailHelp">
+                <div id="emailHelp" class="form-text">Мы никогда никому не передадим вашу электронную почту.</div>
+            </div>
+            <div class="mb-3">
+                <label for="Text" class="form-label">Ваш вопрос</label>
+                <textarea name="message" class="form-control" id="Text" rows="5"></textarea>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Написать">
+        </form>
     </div>
 </div>
 {% endblock %}

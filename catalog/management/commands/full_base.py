@@ -51,6 +51,7 @@ class Command(BaseCommand):
                 Product(pk=product['pk'],
                         name=product['fields']['name'],
                         description=product['fields']['description'],
+                        preview=product['fields']['preview'],
                         price=product['fields']['price'],
                         category=Category.objects.get(pk=product['fields']['category']))
             )
