@@ -1,14 +1,15 @@
 from django.shortcuts import render
+from django.views.generic import ListView, DetailView
 
 from catalog.models import Product, Category
 
 
 # Create your views here.
 
+
 def home(request):
     context = {
-        'title': 'Домашняя',
-        'cat_list': Category.objects.all()
+        'title': 'Домашняя'
     }
     return render(request, 'main/home.html', context)
 
@@ -25,30 +26,29 @@ def contact(request):
     return render(request, 'main/contact.html', context)
 
 
-def catalog(request):
-    context = {
-        'object_list': Product.objects.all(),
-        'cat_list': Category.objects.all(),
-        'title': 'Каталог'
-    }
-    return render(request, 'main/catalog.html', context)
+class ProductListView(ListView):
+    model = Product
+    template_name = 'main/catalog.html'
+
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'main/categories.html'
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'main/product.html'
 
 
 def cat_prod(request, pk):
-    cat = Category.objects.get(pk=pk)
+    category = Category.objects.get(pk=pk)
     context = {
         'object_list': Product.objects.filter(category=pk),
-        'cat_list': Category.objects.all(),
-        'title': f'{cat.name}'
+        'title': f'{category.name}'
     }
     return render(request, 'main/catalog.html', context)
 
-
-def product(request, pk):
-    prod = Product.objects.get(pk=pk)
-    context = {
-        'object_list': Product.objects.filter(pk=pk),
-        'cat_list': Category.objects.all(),
-        'title': f'{prod.name}'
-    }
-    return render(request, 'main/product.html', context)
+# class CategoryDetailView(DetailView):
+#     model = Category
+#     template_name = 'main/catalog.html'

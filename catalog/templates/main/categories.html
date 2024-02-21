@@ -9,12 +9,12 @@
                     <h4 class="my-0 fw-normal">{{object.name | title}}</h4>
                 </div>
                 <div class="card-body">
-                    <img src="{{ object.preview| my_media}}" class="card-img-top">
+<!--                    <img src="{{ object.preview| my_media}}" class="card-img-top">-->
                     <p>
                         {{object.description | title}}
                     </p>
-                    <h2 class="card-title pricing-card-title">{{object.price}} руб.</h2>
-                    <a type="button" class="btn btn-success" href="{% url 'catalog:product' object.pk %}" >Купить</a>
+<!--                    <h2 class="card-title pricing-card-title">{{object.price}} руб.</h2>{% url 'catalog:product' object.pk %}-->
+                    <a type="button" class="btn btn-success" href="{% url 'catalog:cat_prod' object.pk %}">Список</a>
                 </div>
             </div>
         </div>
