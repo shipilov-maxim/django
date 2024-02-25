@@ -1,0 +1,23 @@
+{% extends 'catalog/base.html' %}
+{% load tags %}
+{% block content %}
+    <div class="row container text-center">
+        {% for object in object_list %}
+            <div class="col-4">
+            <div class="card mb-4 rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <h4 class="my-0 fw-normal">{{object.name | title}}</h4>
+                </div>
+                <div class="card-body">
+                    <img src="{% media object.preview %}" class="card-img-top">
+                    <p>
+                        {{object.description | title}}
+                    </p>
+                    <h2 class="card-title pricing-card-title">{{object.price}} руб.</h2>
+                    <a type="button" class="btn btn-success" href="{% url 'catalog:product' object.pk %}" >Купить</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

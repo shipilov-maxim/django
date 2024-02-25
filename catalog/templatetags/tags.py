@@ -6,7 +6,8 @@ register = template.Library()
 
 @register.simple_tag
 def current_time(format_string):
-    return datetime.datetime.now().strftime(format_string)
+    dt_obj = datetime.datetime.now()
+    return dt_obj.strftime(format_string)
 
 
 @register.filter
@@ -14,6 +15,18 @@ def my_media(data):
     if data:
         return f'/media/{data}'
     return f'none'
+
+
+@register.simple_tag
+def media(data):
+    if data:
+        return f'/media/{data}'
+    return f'none'
+
+
+@register.filter
+def string_slice(string):
+    return string[:200]
 
 # Создание фильтра
 # @register.filter(needs_autoescape=True)

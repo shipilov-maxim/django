@@ -1,4 +1,4 @@
-{% extends 'main/base.html' %}
+{% extends 'catalog/base.html' %}
 {% load tags %}
 {% block content %}
     <div class="row container text-center">
@@ -6,15 +6,13 @@
             <div class="col-4">
             <div class="card mb-4 rounded-3 shadow-sm">
                 <div class="card-header py-3">
-                    <h4 class="my-0 fw-normal">{{object.name| title}}</h4>
+                    <h4 class="my-0 fw-normal">{{ object.name | title }}</h4>
                 </div>
                 <div class="card-body">
-                    <img src="{{ object.preview| my_media}}" class="card-img-top">
                     <p>
-                        {{object.description| title}}
+                        {{object.description | title}}
                     </p>
-                    <h2 class="card-title pricing-card-title">{{object.price}} руб.</h2>
-                    <a type="button" class="btn btn-success" href="{% url 'catalog:product' object.pk %}" >Купить</a>
+                    <a type="button" class="btn btn-success" href="{% url 'catalog:cat_prod' object.pk %}">Список</a>
                 </div>
             </div>
         </div>
