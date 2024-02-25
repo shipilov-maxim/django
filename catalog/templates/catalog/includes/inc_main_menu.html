@@ -16,21 +16,23 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'catalog:categories' %}">Категории</a>
             </li>
-<!--            <li class="nav-item dropdown">-->
-<!--                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"-->
-<!--                   aria-expanded="false">-->
-<!--                    Категории-->
-<!--                </a>-->
-<!--                <ul class="dropdown-menu">-->
-<!--                    {% for object in cat_list %}-->
-<!--                    <li><a class="dropdown-item" href="{% url 'catalog:cat_prod' object.pk %}">{{object.name| title}}</a></li>-->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'catalog:blog_list' %}">Блог</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                </a>
+                <ul class="dropdown-menu">
+<!--                    {% for object in object_list %}-->
+<!--                    <li><a class="dropdown-item" href="{% url 'catalog:cat_prod' object.pk %}">{{ object.name | title}}</a></li>-->
 <!--                    {% endfor %}-->
-<!--&lt;!&ndash;                    <li>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <hr class="dropdown-divider">&ndash;&gt;-->
-<!--&lt;!&ndash;                    </li>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <li><a class="dropdown-item" href="\admin">Админка</a></li>&ndash;&gt;-->
-<!--                </ul>-->
-<!--            </li>-->
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="\admin">Админка</a></li>
+                </ul>
+            </li>
             <li class="nav-item">
                 <a class="nav-link disabled" aria-disabled="true">Версия 2.1</a>
             </li>

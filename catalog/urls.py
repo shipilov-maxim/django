@@ -1,15 +1,20 @@
 from django.urls import path
-
 from catalog.apps import CatalogConfig
-from catalog.views import home, contact, ProductListView, ProductDetailView, CategoryListView, cat_prod
+from catalog.views import ProductListView, ProductDetailView, CategoryListView, HomePageView, ContactView, \
+    CategoryDetailView, BlogDetailView, BlogListView, BlogCreateView, BlogUpdateView, BlogDeleteView
 
 app_name = CatalogConfig.name
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('contact/', contact, name='contact'),
-    path('product/<int:pk>', ProductDetailView.as_view(), name='product'),
-    path('catalog/<int:pk>', cat_prod, name='cat_prod'),
+    path('', HomePageView.as_view(), name='home'),
+    path('contact/', ContactView.as_view(), name='contact'),
+    path('catalog/<int:pk>', ProductDetailView.as_view(), name='product'),
     path('catalog/', ProductListView.as_view(), name='catalog'),
-    path('categories/', CategoryListView.as_view(), name='categories')
+    path('categories/<int:pk>', CategoryDetailView.as_view(), name='cat_prod'),
+    path('categories/', CategoryListView.as_view(), name='categories'),
+    path('blog/<int:pk>', BlogDetailView.as_view(), name='blog'),
+    path('blog/', BlogListView.as_view(), name='blog_list'),
+    path('create/', BlogCreateView.as_view(), name='blog_create'),
+    path('update/<int:pk>', BlogUpdateView.as_view(), name='blog_update'),
+    path('delete/<int:pk>', BlogDeleteView.as_view(), name='blog_delete'),
 ]
