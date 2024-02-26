@@ -14,14 +14,14 @@ def current_time(format_string):
 def my_media(data):
     if data:
         return f'/media/{data}'
-    return f'none'
+    return 'none'
 
 
 @register.simple_tag
 def media(data):
     if data:
         return f'/media/{data}'
-    return f'none'
+    return '/media/none.jpg'
 
 
 @register.filter

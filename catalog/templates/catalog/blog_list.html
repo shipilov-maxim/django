@@ -15,6 +15,7 @@
                         {{object.content|string_slice}}...
                     </p>
                     <p class="card-text"><small class="text-muted">{{object.created_at}}</small></p>
+                    <p class="card-text"><small class="text-muted">Количество просмотров {{object.views_count}}</small></p>
                     <a type="button" class="btn btn-success" href="{% url 'catalog:blog' object.pk %}" >Подробнее</a>
                     <a type="button" class="btn btn-secondary" href="{% url 'catalog:blog_update' object.pk %}" >Изменить</a>
                     <a type="button" class="btn btn-danger" href="{% url 'catalog:blog_delete' object.pk %}" >Удалить</a>
