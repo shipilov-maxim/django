@@ -115,7 +115,7 @@ class BlogUpdateView(UpdateView):
     fields = ('title', 'content', 'preview')
 
     def get_success_url(self):
-        return reverse('catalog:blog', args=[self.kwargs.get('pk')])
+        return reverse('catalog:blog', args=[self.kwargs.get('slug')])
 
     def form_valid(self, form):
         if form.is_valid():
