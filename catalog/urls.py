@@ -12,9 +12,9 @@ urlpatterns = [
     path('catalog/', ProductListView.as_view(), name='catalog'),
     path('categories/<int:pk>', CategoryDetailView.as_view(), name='cat_prod'),
     path('categories/', CategoryListView.as_view(), name='categories'),
-    path('blog/<int:pk>', BlogDetailView.as_view(), name='blog'),
+    path('blog/<slug>', BlogDetailView.as_view(), name='blog'),
     path('blog/', BlogListView.as_view(), name='blog_list'),
     path('create/', BlogCreateView.as_view(), name='blog_create'),
-    path('update/<int:pk>', BlogUpdateView.as_view(), name='blog_update'),
-    path('delete/<int:pk>', BlogDeleteView.as_view(), name='blog_delete'),
+    path('update/<slug>', BlogUpdateView.as_view(), name='blog_update'),
+    path('delete/<slug>', BlogDeleteView.as_view(), name='blog_delete'),
 ]

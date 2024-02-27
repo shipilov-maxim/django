@@ -14,7 +14,7 @@ def current_time(format_string):
 def my_media(data):
     if data:
         return f'/media/{data}'
-    return 'none'
+    return '/media/none.jpg'
 
 
 @register.simple_tag
