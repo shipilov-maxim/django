@@ -1,27 +1,45 @@
 {% extends 'catalog/base.html' %}
 {% load tags %}
 {% block content %}
-<a type="button" class="btn btn-success mb-5" href="{% url 'catalog:blog_create' %}" >Создать</a>
-    <div class="row container">
-        {% for object in object_list %}
-            <div class="col-4">
-            <div class="card mb-4 rounded-3 shadow-sm">
-                <div class="card-header py-3  text-center">
-                    <h4 class="my-0 fw-normal">{{object.title}}</h4>
-                </div>
-                <div class="card-body">
-                    <img src="{% media object.preview %}" class="card-img-top">
-                    <p>
-                        {{object.content|string_slice}}...
-                    </p>
+<div class="row container">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <a type="button" class="btn btn-success mb-5 rounded-3 col-12"
+           href="{% url 'catalog:blog_create' %}">Создать</a>
+    </div>
+    <div class="col-4"></div>
+    {% for object in object_list %}
+    <div class="col-4 mb-4">
+        <div class="card mb-4 rounded-3">
+            <div class="card-header py-3  text-center">
+                <h4 class="my-0 fw-normal">{{object.title}}</h4>
+            </div>
+            <div class="card-body">
+                <img src="{% media object.preview %}" class="card-img-top mb-2">
+                <p>
+                    {{object.content|string_slice}}
+                </p>
+                <div class="card-footer">
                     <p class="card-text"><small class="text-muted">{{object.created_at}}</small></p>
-                    <p class="card-text"><small class="text-muted">Количество просмотров {{object.views_count}}</small></p>
-                    <a type="button" class="btn btn-success" href="{% url 'catalog:blog' object.slug %}" >Подробнее</a>
-                    <a type="button" class="btn btn-secondary" href="{% url 'catalog:blog_update' object.slug %}" >Изменить</a>
-                    <a type="button" class="btn btn-danger" href="{% url 'catalog:blog_delete' object.slug %}" >Удалить</a>
+                    <p class="card-text"><small class="text-muted">Количество просмотров {{object.views_count}}</small>
+                    </p>
+                    <p class="card-text"><a class="text-muted" href="{% url 'catalog:toggle_published' object.pk %}">
+                        Деактивировать</a>
+                    </p>
+                    <div class="row">
+                        <div class="btn-group" role="group">
+                            <a type="button" class="btn btn-outline-success col-4"
+                               href="{% url 'catalog:blog' object.slug %}">Подробнее</a>
+                            <a type="button" class="btn btn-secondary col-4"
+                               href="{% url 'catalog:blog_update' object.slug %}">Изменить</a>
+                            <a type="button" class="btn btn-danger col-4"
+                               href="{% url 'catalog:blog_delete' object.slug %}">Удалить</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        {% endfor %}
     </div>
+    {% endfor %}
+</div>
 {% endblock %}

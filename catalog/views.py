@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.forms import inlineformset_factory
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from pytils.translit import slugify
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
-from catalog.models import Product, Category, Blog
+from catalog.forms import BlogForm, ProductForm, VersionForm
+from catalog.models import Product, Category, Blog, Version
 
 
 class HomePageView(TemplateView):
@@ -35,11 +37,41 @@ class ProductListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context = {
-            'title': 'Каталог',
-            'object_list': Product.objects.all()
-        }
+        context['title'] = 'Каталог'
+        context['version_list'] = Version.objects.filter(is_actual_version=True)
         return context
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('catalog:catalog')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Создать продукт'
+        return context
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+
+    def get_success_url(self):
+        return reverse('catalog:catalog', args=[self.kwargs.get('pk')])
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        VersionFormset = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
+        if self.request.method == 'POST':
+            context_data['formset'] = VersionFormset(self.request.POST, instance=self.object)
+        else:
+            context_data['formset'] = VersionFormset(instance=self.object)
+        return context_data
+
+    def form_valid(self, form):
+
+        return super().form_valid(form)
 
 
 class CategoryListView(ListView):
@@ -47,10 +79,7 @@ class CategoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context = {
-            'title': 'Категории',
-            'object_list': Category.objects.all()
-        }
+        context['title'] = 'Категории'
         return context
 
 
@@ -99,8 +128,13 @@ class BlogListView(ListView):
 
 class BlogCreateView(CreateView):
     model = Blog
-    fields = ('title', 'content', 'preview')
+    form_class = BlogForm
     success_url = reverse_lazy('catalog:blog_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Создать блог'
+        return context
 
     def form_valid(self, form):
         if form.is_valid():
@@ -112,19 +146,31 @@ class BlogCreateView(CreateView):
 
 class BlogUpdateView(UpdateView):
     model = Blog
-    fields = ('title', 'content', 'preview')
+    form_class = BlogForm
 
     def get_success_url(self):
         return reverse('catalog:blog', args=[self.kwargs.get('slug')])
 
     def form_valid(self, form):
         if form.is_valid():
-            new_blog = form.save()
-            new_blog.slug = slugify(new_blog.title)
-            new_blog.save()
+            blog = form.save()
+            blog.slug = slugify(blog.title)
+            blog.save()
         return super().form_valid(form)
 
 
 class BlogDeleteView(DeleteView):
     model = Blog
     success_url = reverse_lazy('catalog:blog_list')
+
+
+def toggle_published(request, pk):
+    blog = get_object_or_404(Blog, pk=pk)
+    if blog.is_published:
+        blog.is_published = False
+    else:
+        blog.is_published = True
+
+    blog.save()
+
+    return redirect(reverse('catalog:blog_list'))

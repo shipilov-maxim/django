@@ -25,8 +25,10 @@ def media(data):
 
 
 @register.filter
-def string_slice(string):
-    return string[:200]
+def string_slice(string:str):
+    if len(string) > 200:
+        return string[:200] + '...'
+    return string
 
 # Создание фильтра
 # @register.filter(needs_autoescape=True)

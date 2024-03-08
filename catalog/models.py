@@ -46,8 +46,22 @@ class Blog(models.Model):
     views_count = models.PositiveIntegerField(verbose_name='Просмотры', default=0)
 
     def __str__(self):
-        return f'{self.title} {self.created_at}'
+        return f'{self.title}'
 
     class Meta:
         verbose_name = 'блог'
         verbose_name_plural = 'блоги'
+
+
+class Version(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт')
+    version_number = models.IntegerField(verbose_name='Номер версии')
+    version_title = models.CharField(max_length=100, verbose_name='Название версии')
+    is_actual_version = models.BooleanField(verbose_name='Признак актуальной версии', default=False)
+
+    def __str__(self):
+        return f'{self.version_title}'
+
+    class Meta:
+        verbose_name = 'версия'
+        verbose_name_plural = 'версии'
