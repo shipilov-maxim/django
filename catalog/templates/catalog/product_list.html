@@ -2,12 +2,14 @@
 {% load tags %}
 {% block content %}
 <div class="row container text-center">
+    {% if user.is_authenticated %}
     <div class="col-4"></div>
     <div class="col-4">
         <a type="button" class="btn btn-success mb-5 rounded-3 col-12"
            href="{% url 'catalog:product_create' %}">Создать</a>
     </div>
     <div class="col-4"></div>
+    {% endif %}
     {% for object in object_list %}
     <div class="col-4">
         <div class="card mb-4 rounded-3 shadow-sm">
@@ -24,13 +26,14 @@
                 <a type="button" class="btn btn-secondary"
                    href="{% url 'catalog:product_update' object.pk %}">Изменить</a>
             </div>
-            {% for version in version_list %}
-            {% if version.product_id == object.id %}
             <div class="card-footer">
-                {{ version.version_title }}
+                <span class="text-muted">{{object.creator|default:'SkyPro'}}</span>
+                {% for version in version_list %}
+                {% if version.product_id == object.id %}
+                    {{ version.version_title }}
+                {% endif %}
+                {% endfor %}
             </div>
-            {% endif %}
-            {% endfor %}
         </div>
     </div>
     {% endfor %}

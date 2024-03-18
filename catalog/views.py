@@ -1,3 +1,6 @@
+from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 from django.forms import inlineformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
@@ -28,7 +31,7 @@ class ContactView(View):
         context = {'title': 'Отправлено!'}
         email = request.POST.get('email')
         message = request.POST.get('message')
-        print(f'{email} - {message}')
+        send_mail(f'Обратная связь от {email}', message, settings.EMAIL_HOST_USER, ['skam3840@gmail.com'])
         return render(request, self.template_name, context)
 
 
@@ -42,7 +45,7 @@ class ProductListView(ListView):
         return context
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:catalog')
@@ -52,13 +55,19 @@ class ProductCreateView(CreateView):
         context['title'] = 'Создать продукт'
         return context
 
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.creator = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
-class ProductUpdateView(UpdateView):
+
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
 
     def get_success_url(self):
-        return reverse('catalog:catalog', args=[self.kwargs.get('pk')])
+        return reverse('catalog:product', args=[self.kwargs.get('pk')])
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -70,8 +79,15 @@ class ProductUpdateView(UpdateView):
         return context_data
 
     def form_valid(self, form):
-
-        return super().form_valid(form)
+        context_data = self.get_context_data()
+        formset = context_data['formset']
+        if form.is_valid() and formset.is_valid():
+            self.object = form.save()
+            formset.instance = self.object
+            formset.save()
+            return super().form_valid(form)
+        else:
+            return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 
 class CategoryListView(ListView):
@@ -170,7 +186,5 @@ def toggle_published(request, pk):
         blog.is_published = False
     else:
         blog.is_published = True
-
     blog.save()
-
     return redirect(reverse('catalog:blog_list'))
