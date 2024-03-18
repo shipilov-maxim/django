@@ -42,7 +42,7 @@
                 {{user.email}}
             {% endif %}
             !</a>
-        <a href="{% url 'users:profile' %}" class="btn btn-outline-secondary me-2">Профиль</a>
+<!--        <a href="{% url 'users:profile' %}" class="btn btn-outline-secondary me-2">Профиль</a>-->
         <a href="{% url 'users:logout' %}" class="btn btn-outline-danger me-5">Выйти</a>
         {% else %}
         <a href="{% url 'users:login' %}" class="btn btn-outline-success me-2">Войти</a>
