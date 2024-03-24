@@ -2,12 +2,13 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.forms import inlineformset_factory
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from pytils.translit import slugify
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
-from catalog.forms import BlogForm, ProductForm, VersionForm
+from catalog.forms import BlogForm, ProductForm, VersionForm, ModeratorForm
 from catalog.models import Product, Category, Blog, Version
 
 
@@ -44,6 +45,11 @@ class ProductListView(ListView):
         context['version_list'] = Version.objects.filter(is_actual_version=True)
         return context
 
+    def get_queryset(self, *args, **kwargs):
+        if not self.request.user.is_staff:
+            return super().get_queryset(*args, **kwargs).filter(is_published=True)
+        return super().get_queryset(*args, **kwargs)
+
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
@@ -65,12 +71,15 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
+    success_url = reverse_lazy('catalog:catalog')
 
     def get_success_url(self):
         return reverse('catalog:product', args=[self.kwargs.get('pk')])
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
+        if self.request.user.groups.filter(name='модератор').exists():
+            return context_data
         VersionFormset = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
         if self.request.method == 'POST':
             context_data['formset'] = VersionFormset(self.request.POST, instance=self.object)
@@ -80,6 +89,10 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         context_data = self.get_context_data()
+        if self.request.user.groups.filter(name='модератор').exists():
+            if form.is_valid():
+                self.object = form.save()
+                return super().form_valid(form)
         formset = context_data['formset']
         if form.is_valid() and formset.is_valid():
             self.object = form.save()
@@ -88,6 +101,14 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+    def get_form_class(self):
+        user = self.request.user
+        if user.groups.filter(name='модератор').exists():
+            return ModeratorForm
+        if user == self.object.creator or user.is_staff:
+            return self.form_class
+        raise HttpResponseForbidden
 
 
 class CategoryListView(ListView):
@@ -137,9 +158,7 @@ class BlogListView(ListView):
         return context
 
     def get_queryset(self, *args, **kwargs):
-        queryset = super().get_queryset(*args, **kwargs)
-        queryset = queryset.filter(is_published=True)
-        return queryset
+        return super().get_queryset(*args, **kwargs).filter(is_published=True)
 
 
 class BlogCreateView(CreateView):

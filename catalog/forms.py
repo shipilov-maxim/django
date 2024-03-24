@@ -1,5 +1,6 @@
 from django import forms
 from catalog.models import Blog, Product, Version
+from users.models import User
 
 
 class StyleFormMixin:
@@ -27,7 +28,10 @@ class VersionForm(StyleFormMixin, forms.ModelForm):
 class ProductForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Product
-        exclude = ('creator',)
+        if not User.objects.filter(is_superuser=True):
+            exclude = ('creator', 'is_published')
+        else:
+            fields = '__all__'
 
     def clean_name(self):
         cleaned_data = self.cleaned_data.get('name')
@@ -37,3 +41,9 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
             if word in cleaned_data:
                 raise forms.ValidationError('Название содержит недопустимое слово')
         return cleaned_data
+
+
+class ModeratorForm(ProductForm):
+    class Meta:
+        model = Product
+        fields = ('description', 'category', 'is_published')
