@@ -22,17 +22,24 @@
                     {{object.description | title}}
                 </p>
                 <h2 class="card-title pricing-card-title">{{object.price}} руб.</h2>
-                <a type="button" class="btn btn-success" href="{% url 'catalog:product' object.pk %}">Купить</a>
-                <a type="button" class="btn btn-secondary"
-                   href="{% url 'catalog:product_update' object.pk %}">Изменить</a>
+                <a type="button" class="btn btn-success" href="{% url 'catalog:product' object.pk %}">Подробнее</a>
+                {% if perms.catalog.change_description or user == object.creator %}
+                    <a type="button" class="btn btn-secondary"
+                       href="{% url 'catalog:product_update' object.pk %}">Изменить</a>
+                {% endif %}
             </div>
             <div class="card-footer">
                 <span class="text-muted">{{object.creator|default:'SkyPro'}}</span>
                 {% for version in version_list %}
-                {% if version.product_id == object.id %}
-                    {{ version.version_title }}
-                {% endif %}
+                    {% if version.product_id == object.id %}
+                        {{ version.version_title }}
+                    {% endif %}
                 {% endfor %}
+                <br>
+                {% if object.is_published %}
+                    Активно
+                {% endif %}
+
             </div>
         </div>
     </div>

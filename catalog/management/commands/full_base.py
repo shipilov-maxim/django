@@ -55,6 +55,5 @@ class Command(BaseCommand):
                         price=product['fields']['price'],
                         category=Category.objects.get(pk=product['fields']['category']))
             )
-        # print(product_for_create[0].__dict__)
 
         Product.objects.bulk_create(product_for_create)
