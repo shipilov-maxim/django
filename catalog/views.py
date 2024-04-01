@@ -10,6 +10,7 @@ from pytils.translit import slugify
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 from catalog.forms import BlogForm, ProductForm, VersionForm, ModeratorForm
 from catalog.models import Product, Category, Blog, Version
+from catalog.services import cache_category, cache_product_staff, cache_product
 
 
 class HomePageView(TemplateView):
@@ -38,6 +39,7 @@ class ContactView(View):
 
 class ProductListView(ListView):
     model = Product
+    template_name = 'catalog/product_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -46,9 +48,9 @@ class ProductListView(ListView):
         return context
 
     def get_queryset(self, *args, **kwargs):
-        if not self.request.user.is_staff:
-            return super().get_queryset(*args, **kwargs).filter(is_published=True)
-        return super().get_queryset(*args, **kwargs)
+        if self.request.user.is_staff:
+            return cache_product_staff
+        return cache_product
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -114,9 +116,13 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 class CategoryListView(ListView):
     model = Category
 
+    def get_queryset(self):
+        return cache_category()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Категории'
+        context['category_list'] = None
         return context
 
 
@@ -132,10 +138,8 @@ class CategoryDetailView(ListView):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
         category = Category.objects.get(pk=pk)
-        context = {
-            'title': f'{category.name}',
-            'object_list': Product.objects.filter(category=pk),
-        }
+        context['title'] = f'{category.name}'
+        context['object_list'] = Product.objects.filter(category=pk)
         return context
 
 
