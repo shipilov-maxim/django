@@ -10,6 +10,7 @@ from pytils.translit import slugify
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 from catalog.forms import BlogForm, ProductForm, VersionForm, ModeratorForm
 from catalog.models import Product, Category, Blog, Version
+from catalog.services import cache_category
 
 
 class HomePageView(TemplateView):
@@ -114,9 +115,13 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 class CategoryListView(ListView):
     model = Category
 
+    # def get_queryset(self):
+    #     return cache_category()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Категории'
+        context['object_list'] = cache_category()
         return context
 
 
