@@ -12,8 +12,10 @@
                 <p class="card-text">{{object.description | title}}</p>
                 <p class="card-text"><small class="text-muted">{{object.updated_at}}</small></p>
                 <a type="button" class="btn btn-success text-center" href="#">В корзину</a>
-                <a type="button" class="btn btn-secondary"
-                   href="{% url 'catalog:product_update' object.pk %}">Изменить</a>
+                {% if perms.catalog.change_description or user == object.creator %}
+                    <a type="button" class="btn btn-secondary"
+                       href="{% url 'catalog:product_update' object.pk %}">Изменить</a>
+                {% endif %}
             </div>
             <div class="card-footer">
                 <span class="text-muted">{{object.creator|default:'SkyPro'}}</span>
