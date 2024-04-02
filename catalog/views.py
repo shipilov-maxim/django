@@ -122,7 +122,6 @@ class CategoryListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Категории'
-        context['category_list'] = None
         return context
 
 
