@@ -161,6 +161,6 @@ if CACHE_ENABLED:
         "default": {
             "BACKEND": "django.core.cache.backends.redis.RedisCache",
             "LOCATION": os.getenv('LOCATION'),
-            "TIMEOUT": 300
+            "TIMEOUT": 60
         }
     }
